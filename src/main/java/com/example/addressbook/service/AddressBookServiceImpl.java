@@ -1,6 +1,7 @@
 package com.example.addressbook.service;
 
 import com.example.addressbook.dto.AddressBookDTO;
+import com.example.addressbook.exception.AddressBookNotFoundException;
 import com.example.addressbook.model.AddressBookData;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class AddressBookServiceImpl implements IAddressBookService {
         return addressBookList.stream()
             .filter(data -> data.getId() == id)
             .findFirst()
-            .orElse(null);
+            .orElseThrow(() -> new AddressBookNotFoundException("Address Book entry with id " + id + " not found!"));
     }
     
     public AddressBookData createAddressBookData(AddressBookDTO dto) { 
@@ -29,16 +30,12 @@ public class AddressBookServiceImpl implements IAddressBookService {
     
     public AddressBookData updateAddressBookData(int id, AddressBookDTO dto) { 
         AddressBookData data = getAddressBookDataById(id);
-        if(data != null) {
-            data.updateData(dto);
-        }
+        data.updateData(dto);
         return data; 
     }
     
     public void deleteAddressBookData(int id) {
         AddressBookData data = getAddressBookDataById(id);
-        if(data != null) {
-            addressBookList.remove(data);
-        }
+        addressBookList.remove(data);
     }
 }

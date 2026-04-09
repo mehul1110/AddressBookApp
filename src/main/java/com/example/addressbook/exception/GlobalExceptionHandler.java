@@ -23,4 +23,10 @@ public class GlobalExceptionHandler {
         ResponseDTO responseDTO = new ResponseDTO("Exception while processing REST Request", errMsg);
         return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(AddressBookNotFoundException.class)
+    public ResponseEntity<ResponseDTO> handleAddressBookNotFoundException(AddressBookNotFoundException exception) {
+        ResponseDTO responseDTO = new ResponseDTO(exception.getMessage(), null);
+        return new ResponseEntity<>(responseDTO, HttpStatus.NOT_FOUND);
+    }
 }
